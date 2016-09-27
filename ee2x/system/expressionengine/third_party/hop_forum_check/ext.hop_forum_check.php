@@ -19,7 +19,7 @@ class Hop_forum_check_ext {
 	{
 		$this->settings = $settings;
 	}
-	
+
 	function activate_extension()
 	{
 		$this->settings = array(
@@ -38,7 +38,7 @@ class Hop_forum_check_ext {
 
 		ee()->db->insert('extensions', $data);
 	}
-	
+
 //	function update_extension($current = '')
 //	{
 //		if ($current == '' OR $current == $this->version)
@@ -57,41 +57,41 @@ class Hop_forum_check_ext {
 //					array('version' => $this->version)
 //		);
 //	}
-	
+
 	function disable_extension()
 	{
 		ee()->db->where('class', __CLASS__);
 		ee()->db->delete('extensions');
 	}
-	
+
 	function settings()
 	{
 		$settings = array();
-		
+
 		$settings['words_list'] = array('t', array('rows' => '10'), '');
-		
+
 		return $settings;
 	}
-	
+
 	function check_post($forum_core)
 	{
 		$body = ee()->input->get_post('body');
-		
+
 		$words = explode(PHP_EOL, $this->settings['words_list']);
-		
+
 		foreach ($words as $word)
 		{
 			$word = trim($word);
-			if (strpos($body, $word))
+			if (stripos($body, $word))
 			{
 				$forum_core->submission_error = 'Message contains invalid words';
 				break;
 			}
 		}
-		
+
 		return;
 	}
-	
+
 }
 
 ?>
